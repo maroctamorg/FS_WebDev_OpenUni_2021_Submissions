@@ -1,8 +1,6 @@
 import React, {useState} from 'react'
 
-
 const Button = ({handleClick, text}) => <button onClick={handleClick}>{text}</button>
-
 
 const Statistic = ({text, value}) => <tr><td>{text}</td><td>{value}</td></tr>
 
@@ -37,7 +35,6 @@ const Statistics = ({goodFb, neutralFb, badFb}) => {
   )
 }
 
-
 const App = () => {
 
   const [goodFb, setGoodFb] = useState(0)
@@ -70,6 +67,5 @@ const App = () => {
     </div>
   )
 }
-
 
 export default App;
