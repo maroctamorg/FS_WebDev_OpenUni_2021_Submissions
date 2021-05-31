@@ -12,7 +12,7 @@ const Country = ( {country, state} ) => {
     axios
       .get(`https://api.weatherstack.com/current?access_key=${api_key}&query=${country.capital}}`)
       .then( response => { setWeather(response.data) } )
-  }, [])
+  })
 
   /*The code below was used for testing
   useEffect( () => {
@@ -61,7 +61,7 @@ const Country = ( {country, state} ) => {
       }
     } )
     console.log(weather)
-  }, [country]) */
+  }) */
 
   if(!show) {
     return (
