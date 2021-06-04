@@ -1,0 +1,86 @@
+{
+    "weatherData": [
+      {
+        "id": "Helsinki",
+        "request": {
+            "type": "City",
+            "query": "Suva, Fiji",
+            "language": "en",
+            "unit": "m"
+        },
+        "location": {
+            "name": "Helsinki",
+            "country": "Finland",
+            "region": "",
+            "lat": "",
+            "lon": "",
+            "timezone_id": "",
+            "localtime": "",
+            "localtime_epoch": 0,
+            "utc_offset": ""
+        },
+        "current": {
+            "observation_time": "",
+            "temperature": -20,
+            "weather_code": 52,
+            "weather_icons": [
+                "https://assets.weatherstack.com/images/wsymbols01_png_64/wsymbol_0001_sunny.png"
+            ],
+            "weather_descriptions": [
+                "Sunny"
+            ],
+            "wind_speed": 200,
+            "wind_degree": 349,
+            "wind_dir": "SW",
+            "pressure": 9000,
+            "precip": 0,
+            "humidity": 90,
+            "cloudcover": 0,
+            "feelslike": 13,
+            "uv_index": 4,
+            "visibility": 16
+        }
+      },
+      {
+        "id": "Suva",
+        "request": {
+            "type": "City",
+            "query": "Suva, Fiji",
+            "language": "en",
+            "unit": "m"
+        },
+        "location": {
+            "name": "Suva",
+            "country": "Fiji",
+            "region": "",
+            "lat": "",
+            "lon": "",
+            "timezone_id": "",
+            "localtime": "",
+            "localtime_epoch": 0,
+            "utc_offset": ""
+        },
+        "current": {
+            "observation_time": "",
+            "temperature": 14,
+            "weather_code": 113,
+            "weather_icons": [
+                "https://assets.weatherstack.com/images/wsymbols01_png_64/wsymbol_0001_sunny.png"
+            ],
+            "weather_descriptions": [
+                "Sunny"
+            ],
+            "wind_speed": 85,
+            "wind_degree": 349,
+            "wind_dir": "N",
+            "pressure": 1010,
+            "precip": 0,
+            "humidity": 90,
+            "cloudcover": 0,
+            "feelslike": 13,
+            "uv_index": 4,
+            "visibility": 16
+        }
+      }
+    ] 
+  }
