@@ -1,6 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import phService from './services/phonebook'
 
+const Notification = ({message, type}) => {
+  console.log("Call to Notification")
+
+  if(message === null || type === null) {
+    console.log("Returning null, params: ", message, type)
+    return null
+  }
+
+  return(
+    <div className={type}>
+      {message}
+    </div>
+  )
+}
+
 const Filter = (props) => <div>filter shown with <input value={props.search} onChange={props.handler}/></div>
 
 const PersonForm = (props) => (
@@ -39,11 +54,22 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ search, setNewSearch ] = useState('')
 
+  const TYPE = {
+    ERROR: "error",
+    SUCCESS: "success"
+  }
+  const [ notification, setNotification ] = useState( {message: null, type: TYPE.ERROR})
+
+  const updateNotification = (message, type) => {
+    setNotification( {message: message, type: type} )
+    setTimeout( () => { setNotification( {message: null, type: null} ) }, 5000)
+  }
+
   useEffect( () => {
     phService
       .getAll()
       .then( phonebook => setPersons( phonebook ) )
-      .catch( error => { alert("Unable to fetch phonebook from the server. Please refresh the page and try again!") } ) 
+      .catch( error => { updateNotification("Unable to fetch phonebook from the server. Please refresh the page and try again!", TYPE.ERROR) } ) 
   }, [])
 
   const addPerson = (event) => {
@@ -56,9 +82,9 @@ const App = () => {
 
     if ( persons.map( person => person.name ).includes(newPerson.name) ) {
       if ( persons.map( person => person.number).includes(newPerson.number) ){
-        alert( `The entry ${newName} ${newNumber} is already added to the phonebook` )
+        updateNotification(`The entry ${newName} ${newNumber} is already added to the phonebook`, TYPE.ERROR )
       } else {
-        const confirmed = window.confirm(`Update phone number for entry ${newPerson.name} to ${newPerson.number}?`)
+        const confirmed = window.confirm(`Update phone number for entry '${newPerson.name} to ${newPerson.number}'?`)
         if (confirmed) {
           phService
           .update( persons.find( person => person.name === newPerson.name).id, newPerson )
@@ -66,9 +92,11 @@ const App = () => {
             setPersons(persons.map( person => person.name === newPerson.name ? returnedPerson : person ))
             setNewName('')
             setNewNumber('')
+            updateNotification(`Successfully updated phone number for entry '${newPerson.name}' to '${newPerson.number}'!`, TYPE.SUCCESS)
           } )
           .catch( error => {
-            alert(`Error updating the number for the entry: ${newPerson.name} to the phonebook. Please try again!`)
+            updateNotification(`Error updating the number for the entry '${newPerson.name}' to the phonebook.
+                                The entry was probably deleted from the server. Please refresh the page and try again!`, TYPE.ERROR)
           })
         }
       }
@@ -81,9 +109,10 @@ const App = () => {
           setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewNumber('')
+          updateNotification(`Successfully created entry '${newPerson.name} ${newPerson.number}'!`, TYPE.SUCCESS)
         } )
         .catch( error => {
-          alert(`Error submitting the new entry: ${newPerson.name} ${newPerson.number} to the phonebook. Please try again!`)
+          updateNotification(`Error submitting the new entry: ${newPerson.name} ${newPerson.number} to the phonebook. Please try again!`, TYPE.ERROR)
         })
     }
   }
@@ -93,16 +122,17 @@ const App = () => {
     const confirmed = window.confirm(`Delete entry ${personToDel.name} ${personToDel.number}?`)
     
     if(!confirmed) { 
-      console.log(`the deletion of entry ${personToDel.name} ${personToDel.number} was cancelled`)
+      updateNotification(`the deletion of entry ${personToDel.name} ${personToDel.number} was cancelled`, TYPE.SUCCESS)
     } else {
       phService
       .deleteEntry(id)
       .then( response => {
           console.log(response)
           setPersons( persons.filter( person => person.id !== personToDel.id ) )
+          updateNotification(`Successfully deleted entry ${personToDel.name} ${personToDel.number}`, TYPE.SUCCESS)
         }
       ).catch( error => {
-          alert(`Unable to delete entry ${personToDel.name} ${personToDel.number} from the server. Please try again!`)
+          updateNotification(`Unable to delete entry ${personToDel.name} ${personToDel.number} from the server. Please try again!`, type.ERROR)
       })
     }
   }
@@ -126,6 +156,7 @@ const App = () => {
 
   return (
     <div>
+      <Notification message={notification.message} type={notification.type}/>
       <h2>Phonebook</h2>
       <Filter search={search} handler={updateSearch}/>
       <h3>add a new entry</h3>
